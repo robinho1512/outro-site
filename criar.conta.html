@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Criar Conta</title>
+  <style>
+    body { font-family: Arial; background: #f1f1f1; padding: 30px; }
+    .container {
+      max-width: 400px; margin: auto; background: white; padding: 20px;
+      border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    input, button {
+      width: 100%; padding: 10px; margin-top: 10px;
+      border-radius: 5px; border: 1px solid #ccc;
+    }
+    button {
+      background-color: #28a745; color: white; border: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Criar Conta</h2>
+    <input type="text" id="nome" placeholder="Seu nome" required />
+    <input type="email" id="email" placeholder="E-mail" required />
+    <input type="password" id="senha" placeholder="Senha" required />
+
+    <button onclick="criarConta()">Cadastrar</button>
+    <p id="mensagem" style="color: green;"></p>
+  </div>
+
+  <script>
+    function criarConta() {
+      const nome = document.getElementById('nome').value;
+      const email = document.getElementById('email').value;
+      const senha = document.getElementById('senha').value;
+
+      if (nome && email && senha) {
+        localStorage.setItem('usuario', JSON.stringify({ nome, email, senha }));
+        document.getElementById('mensagem').textContent = "Conta criada com sucesso! Redirecionando...";
+        setTimeout(() => {
+          window.location.href = 'cobranca.html';
+        }, 1500);
+      } else {
+        alert("Preencha todos os campos!");
+      }
+    }
+  </script>
+
+</body>
+</html>

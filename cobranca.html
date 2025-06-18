@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cobrança Automática</title>
+  <style>
+    body { font-family: Arial; background: #f9f9f9; padding: 30px; }
+    .container {
+      max-width: 600px; margin: auto; background: white; padding: 20px;
+      border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    input, button {
+      width: 100%; padding: 10px; margin-top: 10px;
+      border-radius: 5px; border: 1px solid #ccc;
+    }
+    button {
+      background-color: #007bff; color: white; border: none;
+    }
+    .cobranca {
+      background: #e1f5fe; padding: 15px; margin-top: 10px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Sistema de Cobrança</h2>
+    <p>Bem-vindo, <span id="usuario-nome"></span></p>
+
+    <input type="text" id="cliente" placeholder="Nome do Cliente" />
+    <input type="number" id="valor" placeholder="Valor (R$)" />
+    <input type="date" id="vencimento" />
+
+    <button onclick="adicionarCobranca()">Gerar Cobrança</button>
+
+    <div id="lista-cobrancas"></div>
+  </div>
+
+  <script>
+    // Verifica se usuário está logado
+    const usuario = JSON.parse(localStorage.getItem('usuario'));
+    if (!usuario) {
+      alert("Você precisa criar uma conta primeiro.");
+      window.location.href = 'criar-conta.html';
+    } else {
+      document.getElementById('usuario-nome').textContent = usuario.nome;
+    }
+
+    function adicionarCobranca() {
+      const cliente = document.getElementById('cliente').value;
+      const valor = document.getElementById('valor').value;
+      const vencimento = document.getElementById('vencimento').value;
+
+      if (!cliente || !valor || !vencimento) {
+        alert("Preencha todos os campos!");
+        return;
+      }
+
+      const hoje = new Date().toISOString().split("T")[0];
+
+      const div = document.createElement('div');
+      div.className = 'cobranca';
+      div.innerHTML = `
+        <strong>Cliente:</strong> ${cliente}<br>
+        <strong>Valor:</strong> R$ ${parseFloat(valor).toFixed(2)}<br>
+        <strong>Vencimento:</strong> ${vencimento}<br>
+        <strong>Status:</strong> ${vencimento < hoje ? '<span style="color:red;">Vencida</span>' : '<span style="color:green;">Em dia</span>'}
+      `;
+      document.getElementById('lista-cobrancas').appendChild(div);
+
+      // Limpa campos
+      document.getElementById('cliente').value = '';
+      document.getElementById('valor').value = '';
+      document.getElementById('vencimento').value = '';
+    }
+  </script>
+
+</body>
+</html>
